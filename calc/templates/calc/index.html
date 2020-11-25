@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html'%}
+{% load static %}
+{% block contents %}
+
+<div class="card-group">
+    {% for item in data%}
+    <div class="col-lg-3">
+    <div class="card m-2 rounded" >
+        <a class="card-block stretched-link text-decoration-none" href="{% url 'recipyurl' item.Name %}"></a>
+        <img class="card-img-top" src='{{item.Image}}' alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">{{ item.Name }}</h5>
+            <p class="card-text">{% if item.Brief is not None %}{{ item.Description}} {% else %}{{ item.Brief}}  {% endif %}</p>
+        </div>
+    </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+</html>

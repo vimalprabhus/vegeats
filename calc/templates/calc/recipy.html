@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html'%}
+{% load static %}
+{% load mathfilters %}
+{% block contents %}
+<style>
+
+.containerimg {
+  position: relative;
+  object-fit: none;
+}
+.text-block {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background-color: black;
+  color: white;
+  padding-left: 20px;
+  padding-right: 20px;
+   background: rgba(0, 0, 0, 0.3);
+}
+.description{
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+
+</style>
+
+<div class="container d-flex flex-row">
+    <div class="col-sm-8 ">
+        <div class="containerimg image">
+            <img src=/{{Recipy.Image}} style="object-fit: cover;width:100%;padding: 0; margin: 0;height:20vh;">
+            <div class="text-block">
+                <h1>{{Recipy.Name}}</h1>
+            </div>
+        </div>
+        <div class="float-left description">
+            <div>{{Recipy.Description}}</div>
+        </div>
+    </div>
+
+    <div class="col-sm-4 float-right">
+        <div>
+        <div>
+            <img src='/static/images/ConversionCalculator.jpg'
+                 style="object-fit: fill;flex-shrink: 0;padding: 0; margin: 0;">
+        </div>
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Ingrediant</th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                </tr>
+                <tr>
+                    <td>Enter NO. of Person</td>
+                    <form method="GET">
+                        <td>
+                            {% if request.GET.count is not None%}
+                            <input type="number" name="count" min="1" value="{{ request.GET.count}}">
+                            {% else %}
+                            <input type="number" name="count" min="1" value="3">
+                            {% endif%}
+                        </td>
+                        <td><input type="submit" value="Calculate"></td>
+                    </form>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ingrediant in Ingrediants %}
+                <tr>
+                    <td>{{ingrediant.IngridiantName}} {% if ingrediant.OptionalTag %} (optional) {% endif %}</td>
+                    {% if request.GET.count is not None%}
+                    <td>{{ingrediant.IngridiantQty|mul:request.GET.count}}</td>
+                    {% else %}
+                    <td>{{ingrediant.IngridiantQty|mul:3}}</td>
+                    {% endif%}
+                    <td> {{ingrediant.IngridiantUnit}}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+</html>
